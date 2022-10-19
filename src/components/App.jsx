@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Filter from './Filter/Filter';
 import ContactForm from './ContactForm';
 import debounce from 'lodash.debounce';
-import * as storage from '../utils/storage';
 import Box from './Box';
+import { useLocalStorage } from 'react-use';
 
 //Material
 import ContactsTable from './ContactsTable';
@@ -20,23 +20,14 @@ const INITIAL_STATE = {
 const STORAGE_KEY = 'contacts';
 
 export default function App() {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useLocalStorage(STORAGE_KEY, []);
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    const contacts = storage.load(STORAGE_KEY);
-    if (contacts) {
-      setContacts(contacts);
-    } else {
+    if (contacts.length === 0) {
       setContacts(INITIAL_STATE.contacts);
     }
   }, []);
-
-  useEffect(() => {
-    if (contacts.length) {
-      storage.save(STORAGE_KEY, contacts);
-    }
-  });
 
   const onSubmit = ({ id, name, number }) => {
     const contact = {
