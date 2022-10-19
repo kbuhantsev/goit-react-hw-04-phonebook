@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Filter from './Filter/Filter';
 import ContactForm from './ContactForm';
 import debounce from 'lodash.debounce';
@@ -20,14 +20,11 @@ const INITIAL_STATE = {
 const STORAGE_KEY = 'contacts';
 
 export default function App() {
-  const [contacts, setContacts] = useLocalStorage(STORAGE_KEY, []);
+  const [contacts, setContacts] = useLocalStorage(
+    STORAGE_KEY,
+    INITIAL_STATE.contacts
+  );
   const [filter, setFilter] = useState('');
-
-  useEffect(() => {
-    if (contacts.length === 0) {
-      setContacts(INITIAL_STATE.contacts);
-    }
-  }, []);
 
   const onSubmit = ({ id, name, number }) => {
     const contact = {
