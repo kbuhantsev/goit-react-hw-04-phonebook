@@ -1,19 +1,20 @@
+//React
 import React, { useState } from 'react';
+import { useLocalStorage } from 'react-use';
+//Styled
 import Filter from './Filter/Filter';
 import ContactForm from './ContactForm';
-import debounce from 'lodash.debounce';
 import Box from './Box';
-import { useLocalStorage } from 'react-use';
-
-//Material
 import ContactsTable from './ContactsTable';
+//External libs
+import debounce from 'lodash.debounce';
 
 const INITIAL_STATE = {
   contacts: [
-    { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-    { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-    { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-    { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+    { id: '928fbg1', name: 'Rosie Simpson', number: '459-12-56' },
+    { id: '928fbg2', name: 'Hermione Kline', number: '443-89-12' },
+    { id: '928fbg3', name: 'Eden Clements', number: '645-17-79' },
+    { id: '928fbg4', name: 'Annie Copeland', number: '227-91-26' },
   ],
 };
 

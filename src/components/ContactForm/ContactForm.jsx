@@ -25,8 +25,8 @@ const schema = Yup.object().shape({
 function ContactForm({ onSubmit }) {
   const handleSubmit = (values, { resetForm }) => {
     const { name, number } = values;
-    const nanoid = customAlphabet('1234567890', 10);
-    const id = 'id-' + nanoid(2);
+    const nanoid = customAlphabet('1234567890abcdefg', 10);
+    const id = 'id-' + nanoid(7);
 
     if (onSubmit({ id, name, number })) {
       resetForm();
