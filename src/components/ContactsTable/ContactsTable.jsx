@@ -24,13 +24,8 @@ function ContactsTable({ contacts, onDelete }) {
         </TableHead>
         <TableBody>
           {contacts.map(({ id, name, number }) => (
-            <StyledTableRow
-              key={id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <StyledTableCell component="th" scope="row">
-                {id}
-              </StyledTableCell>
+            <StyledTableRow key={id}>
+              <StyledTableCell scope="row">{id}</StyledTableCell>
               <StyledTableCell align="right">{name}</StyledTableCell>
               <StyledTableCell align="right">{number}</StyledTableCell>
               <StyledTableCell align="right">

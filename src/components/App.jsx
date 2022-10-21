@@ -33,12 +33,12 @@ export default function App() {
       name,
       number,
     };
+    console.log(contact);
     if (contacts.find(contact => contact.name === name)) {
       alert(`${name} is already in contacts`);
-      return false;
+      return;
     }
-    setContacts(contacts => [...contacts, contact]);
-    return true;
+    setContacts([...contacts, contact]);
   };
 
   const onFilterChange = ({ value }) => {
@@ -48,13 +48,13 @@ export default function App() {
   const onFilterChangeDebounced = debounce(onFilterChange, 500);
 
   const onDeleteContact = ({ id }) => {
-    setContacts(contacts => contacts.filter(contact => contact.id !== id));
+    setContacts(contacts.filter(contact => contact.id !== id));
   };
 
   const filteredContacts = () => {
-    return contacts.filter(({ name }) => {
-      return name.toLowerCase().includes(filter.toLowerCase());
-    });
+    return contacts.filter(({ name }) =>
+      name.toLowerCase().includes(filter.toLowerCase())
+    );
   };
 
   return (

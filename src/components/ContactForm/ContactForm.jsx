@@ -1,17 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { customAlphabet } from 'nanoid';
-import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { ButtonStyled, FormStyled } from './ContactForm.styled';
 import AddIcon from '@mui/icons-material/Add';
 import { TextField } from '@mui/material';
+//
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const phoneRegExp =
   /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/;
 const nameReExp = /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/;
 
-const schema = Yup.object().shape({
+const schema = Yup.object({
   name: Yup.string()
     .min(3, 'Minimum 3 letters!')
     .matches(nameReExp, 'Name is not valid!')
@@ -20,52 +22,76 @@ const schema = Yup.object().shape({
     .matches(phoneRegExp, 'Phone number is not valid!')
     .max(13, 'Maximum 13 numbers!')
     .required('This field is required!'),
-});
+}).required();
+
+const generateId = () => {
+  const nanoid = customAlphabet('1234567890abcdefg', 10);
+  return nanoid(7);
+};
 
 function ContactForm({ onSubmit }) {
-  const handleSubmit = (values, { resetForm }) => {
-    const { name, number } = values;
-    const nanoid = customAlphabet('1234567890abcdefg', 10);
-    const id = 'id-' + nanoid(7);
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitSuccessful },
+  } = useForm({
+    defaultValues: {
+      name: '',
+      number: '',
+    },
+    resolver: yupResolver(schema),
+  });
 
-    if (onSubmit({ id, name, number })) {
-      resetForm();
-    }
+  const onFormSubmit = data => {
+    const { name, number } = data;
+    const id = generateId();
+    onSubmit({ id, name, number });
   };
 
-  const formik = useFormik({
-    initialValues: { name: '', number: '' },
-    validationSchema: schema,
-    onSubmit: handleSubmit,
-  });
+  const onFormError = error => {
+    console.log(error);
+  };
+
+  React.useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful, reset]);
 
   return (
     <>
-      <FormStyled onSubmit={formik.handleSubmit}>
-        <TextField
+      <FormStyled onSubmit={handleSubmit(onFormSubmit, onFormError)}>
+        <Controller
           name="name"
-          id="name"
-          label="Name"
-          variant="outlined"
-          required
-          size="small"
-          value={formik.values.name}
-          onChange={formik.handleChange}
-          error={formik.touched.name && Boolean(formik.errors.name)}
-          helperText={formik.touched.name && formik.errors.name}
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Name"
+              variant="outlined"
+              size="small"
+              error={errors.name && true}
+              helperText={errors.name?.message}
+            />
+          )}
         />
-        <TextField
+
+        <Controller
           name="number"
-          id="number"
-          label="Number"
-          variant="outlined"
-          required
-          size="small"
-          value={formik.values.number}
-          onChange={formik.handleChange}
-          error={formik.touched.number && Boolean(formik.errors.number)}
-          helperText={formik.touched.number && formik.errors.number}
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Number"
+              variant="outlined"
+              size="small"
+              error={errors.number && true}
+              helperText={errors.number?.message}
+            />
+          )}
         />
+
         <ButtonStyled type="submit" variant="outlined" startIcon={<AddIcon />}>
           Add contact
         </ButtonStyled>
