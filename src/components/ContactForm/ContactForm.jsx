@@ -9,6 +9,8 @@ import { TextField } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import { ToastContainer, toast } from 'react-toastify';
+
 const phoneRegExp =
   /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/;
 const nameReExp = /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/;
@@ -50,7 +52,7 @@ function ContactForm({ onSubmit }) {
   };
 
   const onFormError = error => {
-    console.log(error);
+    toast.error(error);
   };
 
   React.useEffect(() => {
@@ -96,6 +98,18 @@ function ContactForm({ onSubmit }) {
           Add contact
         </ButtonStyled>
       </FormStyled>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </>
   );
 }

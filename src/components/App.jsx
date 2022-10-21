@@ -8,6 +8,7 @@ import Box from './Box';
 import ContactsTable from './ContactsTable';
 //External libs
 import debounce from 'lodash.debounce';
+import { ToastContainer, toast } from 'react-toastify';
 
 const INITIAL_STATE = {
   contacts: [
@@ -35,7 +36,7 @@ export default function App() {
     };
     console.log(contact);
     if (contacts.find(contact => contact.name === name)) {
-      alert(`${name} is already in contacts`);
+      toast.warning(`${name} is already in contacts`, {});
       return;
     }
     setContacts([...contacts, contact]);
@@ -70,6 +71,18 @@ export default function App() {
       <Filter onInput={onFilterChangeDebounced} />
 
       <ContactsTable contacts={filteredContacts()} onDelete={onDeleteContact} />
+
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </div>
   );
 }
