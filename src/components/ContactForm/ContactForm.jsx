@@ -31,7 +31,7 @@ const generateId = () => {
   return nanoid(7);
 };
 
-function ContactForm({ onSubmit }) {
+export default function ContactForm({ onSubmit }) {
   const {
     control,
     handleSubmit,
@@ -115,5 +115,3 @@ function ContactForm({ onSubmit }) {
 }
 
 ContactForm.tropTypes = { onSubmit: PropTypes.func };
-
-export default ContactForm;
