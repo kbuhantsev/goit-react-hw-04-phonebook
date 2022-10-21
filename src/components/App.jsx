@@ -1,5 +1,5 @@
 //React
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useLocalStorage } from 'react-use';
 //Styled
 import Filter from './Filter/Filter';
@@ -34,7 +34,6 @@ export default function App() {
       name,
       number,
     };
-    console.log(contact);
     if (contacts.find(contact => contact.name === name)) {
       toast.warning(`${name} is already in contacts`, {});
       return;
@@ -52,11 +51,11 @@ export default function App() {
     setContacts(contacts.filter(contact => contact.id !== id));
   };
 
-  const filteredContacts = () => {
+  const filteredContacts = useMemo(() => {
     return contacts.filter(({ name }) =>
       name.toLowerCase().includes(filter.toLowerCase())
     );
-  };
+  }, [contacts, filter]);
 
   return (
     <div style={{ marginLeft: '30px' }}>
@@ -70,7 +69,7 @@ export default function App() {
       </Box>
       <Filter onInput={onFilterChangeDebounced} />
 
-      <ContactsTable contacts={filteredContacts()} onDelete={onDeleteContact} />
+      <ContactsTable contacts={filteredContacts} onDelete={onDeleteContact} />
 
       <ToastContainer
         position="top-right"
