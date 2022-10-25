@@ -1,7 +1,8 @@
 import React from 'react';
-
 import App from './App';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
 export const ColorModeContext = React.createContext({
   toggleColorMode: () => {},
 });
@@ -23,17 +24,17 @@ export default function ToggleColorMode() {
         palette: {
           mode,
         },
-        components: {
-          MuiContainer: {
-            styleOverrides: {
-              root: ({ theme }) => ({
-                ...(theme.palette.mode === 'dark' && {
-                  backgroundColor: '#001E3C',
-                }),
-              }),
-            },
-          },
-        },
+        // components: {
+        //   MuiContainer: {
+        //     styleOverrides: {
+        //       root: ({ theme }) => ({
+        //         ...(theme.palette.mode === 'dark' && {
+        //           backgroundColor: '#001E3C',
+        //         }),
+        //       }),
+        //     },
+        //   },
+        // },
       }),
     [mode]
   );
@@ -41,6 +42,7 @@ export default function ToggleColorMode() {
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <App />
       </ThemeProvider>
     </ColorModeContext.Provider>
